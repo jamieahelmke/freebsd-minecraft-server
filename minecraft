@@ -1,7 +1,7 @@
 #!/bin/env sh
 
 # Minecraft Server Startup Script
-# Made by Yuuna <Kyukishi@github> and Jamie<jamieahelmke@github> 
+# Made by Yuuna <Kyukishi@github> and Jamie <jamieahelmke@github> 
 
 # PROVIDE: minecraft_server
 # REQUIRE: DAEMON NETWORKING
