@@ -1,0 +1,42 @@
+#!/bin/env sh
+
+# Minecraft Server Startup Script
+# Made by Yuuna <Kyukishi@github> and Jamie<jamieahelmke@github> 
+
+# PROVIDE: minecraft_server
+# REQUIRE: DAEMON NETWORKING
+# KEYWORD:
+
+. /etc/rc.subr
+
+name="minecraft"
+rcvar="${name}_enable"
+
+user="minecraft"
+user_home="/opt/${name}"
+command="/usr/local/bin/java"
+# Xmx: maximum mem alloc
+# Xms: initial mem alloc 
+command_args="-Xmx4096M -Xms1024M -jar ${user_home}/server.jar nogui"
+pidfile="/var/run/${name}/${name}.pid"
+logfile="/var/log/${name}.log"
+start_cmd="mc_start"
+stop_cmd="mc_stop"
+
+mc_start() {
+  if checkyesno ${rcvar}; then
+    export USER=${user}
+    export HOME=${user_home}
+    cd ${user_home}
+    /usr/sbin/daemon -u ${user} -p ${pidfile} ${command} ${command_args} > ${logfile} 2>&1
+    echo "Starting Minecraft Server (PID: $(cat $pidfile))"
+  fi
+}
+
+mc_stop() {
+  echo "Stopping Minecraft Server (PID: $(cat $pidfile))"
+  kill $(cat $pidfile)
+}
+
+load_rc_config ${name}
+run_rc_command "$1"
